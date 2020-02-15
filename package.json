@@ -1,0 +1,64 @@
+{
+  "name": "robot-data-marketplace",
+  "version": "1.0.0",
+  "description": "Robot Data Marketplace",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --host 0.0.0.0",
+    "start": "webpack"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "@babel/react"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kPatch/robot-data-marketplace.git"
+  },
+  "keywords": [
+    "telepresence",
+    "usar",
+    "ocs"
+  ],
+  "author": "@kPatch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kPatch/robot-data-marketplace/issues"
+  },
+  "homepage": "https://github.com/kPatch/robot-data-marketplace#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.0.0-rc.0",
+    "@material-ui/icons": "^4.0.1",
+    "classnames": "^2.2.6",
+    "createjs-module": "^0.8.3",
+    "easeljs": "^1.0.2",
+    "eventemitter2": "^5.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "ros2d": "^0.9.0",
+    "roslib": "^1.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-react-constant-elements": "^7.2.0",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^2.1.1",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^6.0.1",
+    "typescript": "^3.5.1",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
+  }
+}
