@@ -33,13 +33,15 @@ componentDidMount(){
     open: true,
     appBarTitle: '',
     signer: "",
-    address: ""
+    address: "",
+    contractABI: "",
+    contractAddress: "",
+    contract: "",
   }
   initEthers=()=> {
   let signer
   let address
   let provider = new ethers.providers.Web3Provider(web3.currentProvider);
-  console.log("elelelelel")
 
   provider.listAccounts().then(function(result){
     signer = provider.getSigner(result[0])
@@ -49,11 +51,13 @@ componentDidMount(){
     address = signer._address;
     console.log(address)
     this.setState({ address: address })
+    connectToContract()
   })
 }
 
 connectToContract=()=> {
-  contract = new ethers.Contract(tokenAddress,tokenABI,signer);
+  //contract = new ethers.Contract(tokenAddress,tokenABI,signer);
+  console.log(this.state.signer)
 }
 
 approve = () => {
