@@ -20,7 +20,7 @@ const itemList = {
   DashboardIcon:  { Component: DashboardIcon,   text: 'Assets',       path: '/assets'},
   Divider:        { Component: Divider,         text: null,           path: null },
   HomeIcon:       { Component: HomeIcon,        text: 'Home',         path: '/home' },
-  Interfaces:     { Component: Accessibility,   text: 'Robots',       path: '/system-state'},
+  Interfaces:     { Component: Accessibility,   text: 'Data Sources',       path: '/system-state'},
   PeopleIcon:     { Component: PeopleIcon,      text: 'Operators',        path: '/operators'},
   LanguageIcon:   { Component: LanguageIcon,    text: 'Networks',     path: '/networks'},
   LayersIcon:     { Component: LayersIcon,      text: 'Integrations', path: '/integrations'},

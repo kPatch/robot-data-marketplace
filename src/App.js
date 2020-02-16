@@ -11,6 +11,7 @@ import Home from './screens/Home'
 import Interfaces from "./screens/Interfaces";
 import SystemState from './screens/SystemState'
 import { ethers } from 'ethers'
+import DataSources from "./screens/DataSources"
 
 const styles = theme => ({
   root: {
@@ -150,7 +151,7 @@ sendPromise.then((tx) => {
               <Route exact path="/" component={ Home }/>
               <Route exact path="/home" component={ Home }/>
               <Route exact path="/interfaces" component={ Interfaces} />
-              <Route exact path="/system-state" component={ SystemState} />
+              <Route exact path="/system-state" component={ DataSources} />
             </Switch>
           </div>
         </div>
