@@ -45,7 +45,7 @@ const rows = [
   createDataRows('ETHDenver', 'Berkeley Mote - 3rd Floor', 'Raw', 'Yes', 'Temperature data from IoT device', 'Yes', 0.001, false),
 ]
 
-function SimpleTable() {
+function SimpleTable(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     checkedA: true,
@@ -72,7 +72,7 @@ function SimpleTable() {
         </TableHead>
         <TableBody>
           {rows.map(row => (
-            <TableRow key={row.location}>
+            <TableRow key={row.source}>
               <TableCell component="th" scope="row">
                 {row.location}
               </TableCell>
@@ -90,7 +90,7 @@ function SimpleTable() {
                 color="secondary"
                 inputProps={{ 'aria-label': 'primary checkbox' }}
                 /> */}
-                <Button variant="contained" color="secondary" disabled={!row.enabled}>Purchase</Button>
+                <Button variant="contained" color="secondary" disabled={!row.enabled} onClick={props.onClick}>Purchase</Button>
               </TableCell>
             </TableRow>
           ))}
