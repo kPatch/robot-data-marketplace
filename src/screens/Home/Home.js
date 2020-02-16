@@ -526,7 +526,7 @@ class Home extends Component {
 
 
     this.ros = new ROSLIB.Ros({
-      url: 'ws://localhost:9090'
+      url: 'ws://172.16.0.132:9090'
     })
 
     this.ros.on('connection', () => {
