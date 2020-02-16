@@ -148,7 +148,7 @@ sendPromise.then((tx) => {
           />
           <div className="app">
             <Switch>
-              <Route exact path="/" component={ Home }/>
+              <Route exact path="/" component={ DataSources }/>
               <Route exact path="/home" component={ Home }/>
               <Route exact path="/interfaces" component={ Interfaces} />
               <Route exact path="/system-state" component={ DataSources} />
