@@ -332,96 +332,109 @@ let tokenABI = [
 ]
 let tokenContract;
 
-let roboMarketAddress = "0x8daf13cE2D80086377197f542DbF1c077CD16a9e"
+let roboMarketAddress = "0x535d283D5dB8DC46398Ae3F101b2bf35c380B6CC"
 let roboMarketABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "tokenAddress",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "buy1",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "permissions1",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "price1",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "roboCoin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "validatePermission1",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "itemIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "itemIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "items",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "roboCoin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "itemIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "validatePermission",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
 ]
+
 let roboMarketContract
 
 
@@ -509,7 +522,7 @@ class Home extends Component {
       vertical: 'bottom',
       horizontal: 'right',
       Transition: SlideTransition,
-      showVideo:"visible"
+      showVideo:"hidden"
     })
   }
 
@@ -578,7 +591,7 @@ class Home extends Component {
       tokenContract = new ethers.Contract(tokenAddress,tokenABI,signer)
       roboMarketContract = new ethers.Contract(roboMarketAddress,roboMarketABI,signer)
       console.log(roboMarketContract)
-      roboMarketContract.validatePermission1().then(function(result){
+      roboMarketContract.validatePermission(1).then(function(result){
         console.log("working to validate")
         console.log(result)
         if(result==true){
@@ -604,14 +617,14 @@ class Home extends Component {
       }
 
       buyData=()=>{
-        roboMarketContract.buy1().then(function(result){
+        roboMarketContract.buy(1,{value:1000000000000000}).then(function(result){
           console.log(result)
         })
       }
 
 
       checkPermission=()=>{
-        roboMarketContract.validatePermission1().then(function(result){
+        roboMarketContract.validatePermission().then(function(result){
           console.log("working to validate")
           console.log(result)
           if(result==true){
@@ -665,25 +678,24 @@ class Home extends Component {
           justify='flex-start'
           alignItems='flex-start'>
           <Grid item xs={12} md={6} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} style={{visibility:this.state.showVideo}}>
               <CssBaseline/>
               <AnimatedVideoCanvas
                 width={640}
                 height={420}
                 src='http://172.16.0.132:8080/stream?topic=/camera/depth/image_rect&type=png'
-                style={{visibility:showVideo}}
+                style={{visibility:this.state.showVideo}}
               />
             </Paper>
           </Grid>
-                        <Button style={{backgroundColor:"#ffc107"}} onClick={this.approve}>Purchase Robot Data</Button>
-                        <label id="statusLabel">Status: Vaildated</label>
+                        
           <Grid item xs={12} md={6} sm={12}>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} style={{visibility:this.state.showVideo}}>
             <AnimatedVideoCanvas
                 width={640}
                 height={420}
                 src='http://172.16.0.132:8080/stream?topic=/camera/rgb/image_raw&quality=50'
-                style={{visibility:showVideo}}
+                
               />
             </Paper>
           </Grid>
@@ -700,6 +712,14 @@ class Home extends Component {
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             <Paper className={classes.paper}>Robot State View</Paper>
+			<div style={{display:"flex",justifyContent:"center"}}>
+			<Button style={{backgroundColor:"#ffc107"}} onClick={this.buyData}>Purchase Robot Data</Button>
+                       
+			</div>
+			<div style={{display:"flex",justifyContent:"center"}}>
+			   <label id="statusLabel">Status: Vaildated</label>	
+			</div>
+					
           </Grid>
           <Grid item xs={12} sm={12} md={4}>
             {/* <Paper className={classes.paper}>
