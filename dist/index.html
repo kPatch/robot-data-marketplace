@@ -4,16 +4,163 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Robot Marketplace</title>
+  <title>ATR OCS</title>
 </head>
 <body>
   <div id="root"></div>
 </body>
+
+<script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+  <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+
 <!-- <script type="text/javascript" src="http://cdn.robotwebtools.org/ros2djs/current/ros2d.min.js"></script> -->
 <script type="text/javascript" src="http://cdn.robotwebtools.org/nav2djs/current/nav2d.min.js"></script>
 <!-- <script type="text/javascript">
   window.ROS2D = ROS2D
   console.log('ROS2D: ' + ROS2D)
 </script> -->
+
+  <script type="text/javascript" type="text/javascript">
+    // Connecting to ROS
+    // -----------------
+
+    var left  = 37
+    var up    = 38
+    var right = 39
+    var down  = 40
+    var ros = new ROSLIB.Ros({
+      url : 'ws://172.16.0.132:9090'
+    });
+
+    ros.on('connection', function() {
+      console.log('Connected to websocket server.');
+    });
+
+    ros.on('error', function(error) {
+      console.log('Error connecting to websocket server: ', error);
+    });
+
+    ros.on('close', function() {
+      console.log('Connection to websocket server closed.');
+    });
+
+    // Publishing a Topic
+    // ------------------
+
+    var cmdVel = new ROSLIB.Topic({
+      ros : ros,
+      name : '/cmd_vel_mux/input/teleop',
+      messageType : 'geometry_msgs/Twist'
+    });
+
+    var twist = new ROSLIB.Message({
+      linear : {
+        x : 0.25,
+        y : 0,
+        z : 0
+      },
+      angular : {
+        x : 0,
+        y : 0,
+        z : 0
+      }
+    });
+
+    var twistForward = new ROSLIB.Message({
+      linear : {
+        x : 0.25,
+        y : 0,
+        z : 0
+      },
+      angular : {
+        x : 0,
+        y : 0,
+        z : 0
+      }
+    });
+
+
+    var twistBackwards = new ROSLIB.Message({
+      linear : {
+        x : -0.25,
+        y : 0,
+        z : 0
+      },
+      angular : {
+        x : 0,
+        y : 0,
+        z : 0
+      }
+    });
+
+    var twistLeft = new ROSLIB.Message({
+      linear : {
+        x : 0.25,
+        y : 0,
+        z : 0
+      },
+      angular : {
+        x : 0,
+        y : 0,
+        z : 0.75
+      }
+    });
+
+
+    var twistRight = new ROSLIB.Message({
+      linear : {
+        x : 0.25,
+        y : 0,
+        z : 0
+      },
+      angular : {
+        x : 0,
+        y : 0,
+        z : -0.75
+      }
+    });
+
+
+    //cmdVel.publish(twist);
+
+    // Subscribing to a Topic
+    // ----------------------
+
+    var listener = new ROSLIB.Topic({
+      ros : ros,
+      name : '/listener',
+      messageType : 'std_msgs/String'
+    });
+
+    listener.subscribe(function(message) {
+      console.log('Received message on ' + listener.name + ': ' + message.data);
+      listener.unsubscribe();
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+    'use strict';
+    document.addEventListener('keydown', event => {
+        const charList = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        const key = event.key.toLowerCase();
+        console.log(key);
+        // we are only interested in alphanumeric keys
+        // if (charList.indexOf(key) === -1) return;
+        // console.log(key);
+        if(key === 'arrowup') {
+          console.log('Command UP')
+          cmdVel.publish(twistForward);
+        } else if(key == 'arrowdown'){
+          cmdVel.publish(twistBackwards);
+          console.log('Command DOWN')
+        } else if(key == 'arrowleft'){
+          cmdVel.publish(twistLeft);
+          console.log('Command LEFT')
+        } else if(key == 'arrowright'){
+          cmdVel.publish(twistRight);
+          console.log('Command RIGHT');
+        }
+    });
+});
+  </script>
+
 <script type="text/javascript" src="./main.js"></script>
 </html>
