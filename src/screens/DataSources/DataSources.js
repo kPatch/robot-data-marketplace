@@ -509,10 +509,12 @@ class DataSources extends Component {
         let amount = ethers.utils.parseUnits("1000",8)
       	tokenContract.approve(roboMarketAddress,amount).then(function(result){
           console.log(result)
-          if(this.props.history.location.pathname != listItem.path) {
+          if(this.props.history.location.pathname != 'home') {
+            console.log('HOME')
+  
             console.log(JSON.stringify(this.props.history))
-            this.props.history.push(listItem.path)
-            this.props.handleListItemClick(listItem.text) 
+            this.props.history.push('home')
+            // this.props.handleListItemClick(listItem.text) 
           }
         })
       }
