@@ -670,7 +670,7 @@ class Home extends Component {
               <AnimatedVideoCanvas
                 width={640}
                 height={420}
-                src='http://localhost:8080/stream?topic=/camera/depth/image_raw&type=png'
+                src='http://172.16.0.132:8080/stream?topic=/camera/depth/image_rect&type=png'
                 style={{visibility:showVideo}}
               />
             </Paper>
@@ -682,7 +682,7 @@ class Home extends Component {
             <AnimatedVideoCanvas
                 width={640}
                 height={420}
-                src='http://localhost:8080/stream?topic=/camera/rgb/image_raw&quality=50'
+                src='http://172.16.0.132:8080/stream?topic=/camera/rgb/image_raw&quality=50'
                 style={{visibility:showVideo}}
               />
             </Paper>
