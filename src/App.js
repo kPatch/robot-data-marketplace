@@ -61,9 +61,10 @@ connectToContract=()=> {
 }
 
 approve = () => {
-  contract.approve(contractAddress,amount).then(function(result){
-    console.log(result)
-  })
+  // contract.approve(contractAddress,amount).then(function(result){
+  //   console.log(result)
+  // })
+  
 }
 
 buyData=()=>{

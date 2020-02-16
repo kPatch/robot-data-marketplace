@@ -2,8 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import { amber, cyan, blue, blueGrey, lightBlue, pink } from '@material-ui/core/colors'
-import Button from '@material-ui/core/Button';
-
 import App from './App'
 
 const theme = createMuiTheme({
