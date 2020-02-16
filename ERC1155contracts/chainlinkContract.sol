@@ -1,0 +1,112 @@
+pragma solidity 0.4.24;
+
+import "https://github.com/smartcontractkit/chainlink/evm-contracts/src/v0.4/ChainlinkClient.sol";
+import "https://github.com/smartcontractkit/chainlink/evm-contracts/src/v0.4/vendor/Ownable.sol";
+
+contract ATestnetConsumer is ChainlinkClient, Ownable {
+    
+  uint256 constant private ORACLE_PAYMENT = 1 * LINK;
+
+  uint256[] public DataPoints;
+  uint256 public sensor1;
+  uint256 public sensor2;
+  uint256 public sensor3;
+  
+  event Robot1Fulfilled(
+    bytes32 indexed requestId,
+    uint256 indexed DataPoint
+  );
+
+
+  constructor() public Ownable() {
+    setPublicChainlinkToken();
+  }
+
+  function requestRobot(address _oracle, string _jobId)
+    public
+    onlyOwner
+  {
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillRobot.selector);
+   
+    sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
+  }
+  
+function requestRobots(address _oracle, string _jobId1, string _jobId2, string _jobId3)
+    public
+    onlyOwner
+  {
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId1), this, this.fulfillRobot1.selector);
+    Chainlink.Request memory req2 = buildChainlinkRequest(stringToBytes32(_jobId1), this, this.fulfillRobot2.selector);
+    Chainlink.Request memory req3 = buildChainlinkRequest(stringToBytes32(_jobId1), this, this.fulfillRobot3.selector);
+    sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
+    sendChainlinkRequestTo(_oracle, req2, ORACLE_PAYMENT);
+    sendChainlinkRequestTo(_oracle, req3, ORACLE_PAYMENT);
+  }
+
+
+
+  function fulfillRobot(bytes32 _requestId, uint256 _price)
+    public
+    recordChainlinkFulfillment(_requestId)
+  {
+    emit Robot1Fulfilled(_requestId, _price);
+     DataPoints.push(_price);
+  }
+  function fulfillRobot1(bytes32 _requestId, uint256 _price)
+    public
+    recordChainlinkFulfillment(_requestId)
+  {
+    emit Robot1Fulfilled(_requestId, _price);
+     sensor1=_price;
+  }
+   function fulfillRobot2(bytes32 _requestId, uint256 _price)
+    public
+    recordChainlinkFulfillment(_requestId)
+  {
+    emit Robot1Fulfilled(_requestId, _price);
+     sensor2=_price;
+     }
+
+  function fulfillRobot3(bytes32 _requestId, uint256 _price)
+    public
+    recordChainlinkFulfillment(_requestId)
+  {
+    emit Robot1Fulfilled(_requestId, _price);
+    sensor3=_price;
+  }
+
+ 
+
+  function getChainlinkToken() public view returns (address) {
+    return chainlinkTokenAddress();
+  }
+
+  function withdrawLink() public onlyOwner {
+    LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
+    require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to transfer");
+  }
+
+  function cancelRequest(
+    bytes32 _requestId,
+    uint256 _payment,
+    bytes4 _callbackFunctionId,
+    uint256 _expiration
+  )
+    public
+    onlyOwner
+  {
+    cancelChainlinkRequest(_requestId, _payment, _callbackFunctionId, _expiration);
+  }
+
+  function stringToBytes32(string memory source) private pure returns (bytes32 result) {
+    bytes memory tempEmptyStringTest = bytes(source);
+    if (tempEmptyStringTest.length == 0) {
+      return 0x0;
+    }
+
+    assembly { // solhint-disable-line no-inline-assembly
+      result := mload(add(source, 32))
+    }
+  }
+
+}
