@@ -10,6 +10,7 @@ import PortalDrawer from './components/PortalDrawer'
 import Home from './screens/Home'
 import Interfaces from "./screens/Interfaces";
 import SystemState from './screens/SystemState'
+import { ethers } from 'ethers'
 
 const styles = theme => ({
   root: {
@@ -18,12 +19,84 @@ const styles = theme => ({
 })
 
 class App extends Component {
-  
+
+
+componentDidMount(){
+  this.initEthers()
+
+  //this.sendTX()
+}
+
+
+
   state = {
     open: true,
-    appBarTitle: ''
+    appBarTitle: '',
+    signer: "",
+    address: ""
   }
+  initEthers=()=> {
+  let signer
+  let address
+  let provider = new ethers.providers.Web3Provider(web3.currentProvider);
+  console.log("elelelelel")
 
+  provider.listAccounts().then(function(result){
+    signer = provider.getSigner(result[0])
+    console.log(signer)
+    this.setState({ signer: signer })
+
+    address = signer._address;
+    console.log(address)
+    this.setState({ address: address })
+  })
+}
+
+connectToContract=()=> {
+  contract = new ethers.Contract(tokenAddress,tokenABI,signer);
+}
+
+approve = () => {
+  contract.approve(contractAddress,amount).then(function(result){
+    console.log(result)
+  })
+}
+
+buyData=()=>{
+  contract.buy1().then(function(result){
+    console.log(result);
+  })
+}
+
+
+checkPermission=()=>{
+  return contract.validatePermission().then(function(result){
+    console.log(result)
+  })
+}
+
+sendTx=()=> {
+  let tx = {
+    to: "0x88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290",
+    // ... or supports ENS names
+    // to: "ricmoo.firefly.eth",
+
+    // We must pass in the amount as wei (1 ether = 1e18 wei), so we
+    // use this convenience function to convert ether to wei.
+    value: ethers.utils.parseEther('0.001')
+};
+let signer = this.state.signer
+let sendPromise = signer.sendTransaction(tx);
+
+sendPromise.then((tx) => {
+    console.log(tx);
+    // {
+    //    // All transaction fields will be present
+    //    "nonce", "gasLimit", "pasPrice", "to", "value", "data",
+    //    "from", "hash", "r", "s", "v"
+    // }
+});
+}
   handleDrawerOpen = () => {
     console.log("HANDLE_DRAWER_OPEN")
     this.setState({ open: true })
@@ -41,6 +114,8 @@ class App extends Component {
   handleListItemClick = (appBarTitle) => {
     console.log('HANDLE_LIST_ITEM_CLICK' + appBarTitle)
     this.setState({ appBarTitle: appBarTitle })
+
+
   }
 
   handleAppBarIconClick = () => {
