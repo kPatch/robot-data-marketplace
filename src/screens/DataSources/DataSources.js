@@ -457,6 +457,7 @@ const styles = theme => ({
 })
 
 class DataSources extends Component {
+
   constructor(props) {
     super(props)
 
@@ -506,14 +507,15 @@ class DataSources extends Component {
   }
 
       approve = () => {
+		var self = this;
         let amount = ethers.utils.parseUnits("1000",8)
       	tokenContract.approve(roboMarketAddress,amount).then(function(result){
           console.log(result)
-          if(this.props.history.location.pathname != 'home') {
+          if(self.props.history.location.pathname != 'home') {
             console.log('HOME')
   
-            console.log(JSON.stringify(this.props.history))
-            this.props.history.push('home')
+            console.log(JSON.stringify(self.props.history))
+            self.props.history.push('home')
             // this.props.handleListItemClick(listItem.text) 
           }
         })
