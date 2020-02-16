@@ -675,8 +675,8 @@ class Home extends Component {
               />
             </Paper>
           </Grid>
-                        <Button style={{backgroundColor:"#ffc107"}} onClick={this.approve}>Purchase Robot Data</Button>
-                        <label id="statusLabel">Status: Vaildated</label>
+                        {/* <Button style={{backgroundColor:"#ffc107"}} onClick={this.approve}>Purchase Robot Data</Button>
+                        <label id="statusLabel">Status: Vaildated</label> */}
           <Grid item xs={12} md={6} sm={12}>
             <Paper className={classes.paper}>
             <AnimatedVideoCanvas
